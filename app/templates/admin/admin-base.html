@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ADMIN | TRAMITES{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('admin.admin_static', filename='admin-base.css') }}"
+    />
+</head>
+<body>
+    <!--Cargando el template side-bar-->
+    {% set sidebar_items = [
+            {"item_name": "Inicio", "path": "/admin"},
+            {"item_name": "Gestor de Tramites", "path": "/admin/gestor-tramite"},
+            {"item_name": "Gestor de Revisiones", "path": "/admin/gestor-revisiones"},
+            {"item_name": "Reportes", "path": "/admin"}
+          ] 
+    %}
+    {% include 'shared/side-bar/side-bar.html' %}
+
+    <div class="main-content">
+      {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('admin.admin_static', filename='admin-base.js') }}"></script>
+
+</body>
+</html>

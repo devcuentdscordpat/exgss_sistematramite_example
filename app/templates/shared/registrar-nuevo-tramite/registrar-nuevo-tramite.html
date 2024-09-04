@@ -1,0 +1,240 @@
+<style>
+    .bx {
+        min-width: 600px;
+        margin: 5px auto;
+        padding: 20px;
+        background-color: #FCFCFC;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .bx-form > h2 {
+        font-weight: normal;
+        padding: 5px;
+        border-bottom: 2px solid #636a74;
+        margin-bottom: 10px;
+    }
+    .bx-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bx-form label {
+        margin-bottom: 15px;
+    }
+
+    .bx-form input[type="text"],
+    .bx-form input[type="tel"],
+    .bx-form input[type="datetime-local"],
+    .bx-form select,
+    .bx-form textarea {
+        padding: 5px;
+        font-size: 1rem;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+        background-color: #ffffff;
+    }
+
+    .bx-form input[type="text"]:focus,
+    .bx-form input[type="tel"]:focus,
+    .bx-form input[type="datetime-local"]:focus,
+    .bx-form select:focus,
+    .bx-form textarea:focus {
+        border-color: #5e81ac;
+        outline: none;
+    }
+    .bx-buscar-persona input[type="submit"],
+    .bx-form input[type="submit"] {
+        padding: 5px;
+        font-size: 1rem;
+        color: #ffffff;
+        background-color: #5e81ac;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .bx-form input[type="submit"]:hover {
+        background-color: #4c566a;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    table th, table td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+
+    table th {
+        background-color: #e5e9f0;
+    }
+
+    #tramitadorSeleccionado,
+    #propietarioSeleccionado {
+        background-color: #f3f3f3;
+    }
+
+    #tableBusqueda button{
+        margin: 2px;
+        padding: 2px;
+    }
+    #tableBusqueda th:first-child{
+        min-width: 210px;
+        max-width: 300px;
+    }
+    #tableBusqueda th:nth-child(2){
+        min-width: 150px;
+    }
+    .bx-buscar-persona{
+        display: flex;
+        gap: 10px;
+    }
+    .bx-buscar-persona input[type="search"]{ min-width: 300px; }
+
+</style>
+
+<div class="bx">
+    <form class="bx-buscar-persona" onsubmit="return buscarTramitador(event)">
+        <label for="carnet">
+            <input type="search" name="SearchCarnet" id="SearchCarnet" placeholder="Buscar por CI" required>
+        </label>
+        <input type="submit" value="Buscar">
+    </form>
+    <div>
+        <table id="tableBusqueda">
+            <thead>
+                <tr><th>Nombre completo</th><th>Carnet Identidad</th><th></th></tr>
+            </thead>
+            <tbody id="resBusqueda">
+                <tr id="tr-1">
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <form class="bx-form" onsubmit="return registrarTramite(event)">
+        <h2>Datos del Trámite</h2>
+        <table>
+            <tr>
+                <th>Tramitador</th><td id="tramitadorSeleccionado">-</td>
+            </tr>
+            <tr>
+                <th>Propietario</th><td id="propietarioSeleccionado">-</td>
+            </tr>
+        </table>
+        <label for="NroPatente">
+            <input type="text" name="NroPatente" required placeholder="Numero de patente">
+        </label>
+        <label for="TipoTramite">
+            <select name="TipoTramite" id="TipoTramite" required>
+                <option value="" disabled selected>Seleccione un tipo de trámite</option>
+                <option value="1">OpcionEjemplo1</option>
+                <option value="2">OpcionEjemplo2</option>
+            </select>
+        </label>
+        <label for="DescripcionDocumentosEntregados">
+            <textarea name="DescripcionDocumentosEntregados" placeholder="Descripción de documentos entregados" required></textarea>
+        </label>
+        <label for="FechaEstimadaEntrega">
+            <input type="date" name="FechaEstimadaEntrega" id="FechaEstimadaEntrega" required>
+        </label>
+        <input type="submit" value="Registrar Trámite">
+    </form>
+</div>
+
+<script>
+    let registro = {
+        tramitador_id: null,
+        propietario_id: null,
+        tipo_tramite: null,
+        descripcion_documentos_entregados: null,
+        fecha_estimada_entrega: null,
+        nro_patente: null
+    };
+    
+    function buscarTramitador(event) {
+        event.preventDefault();
+        const carnet = document.getElementById('SearchCarnet').value;
+
+        fetch(`/gestor_tramite/obtener_persona/${carnet}`)
+            .then(response => response.json())
+            .then(data => {
+                if (typeof data.nombre === 'undefined') { alert("Persona no encontrada"); return; }
+                document.getElementById("resBusqueda").innerHTML =/*html*/`
+                <tr id="tr-1">
+                    <td>${data.nombre} ${data.ap_paterno} ${data.ap_materno}</td>
+                    <td>${data.ci}</td>
+                    <td>
+                        <button onclick="agregarTramitador('tr-1', '${data.id}')">Agregar como tramitador</button>
+                        <button onclick="agregarPropietario('tr-1', '${data.id}')">Agregar como propietario</button>
+                    </td>
+                </tr>
+                `;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+    function agregarTramitador(trId, id) {
+        const trData = document.getElementById(trId);
+        const tramitadorSeleccionado = document.getElementById('tramitadorSeleccionado');
+        const nombre = trData.cells[0].innerText;
+        const carnet = trData.cells[1].innerText;
+        tramitadorSeleccionado.textContent = `${nombre}  | CI: ${carnet}`
+        registro.tramitador_id = id;
+    }
+
+    function agregarPropietario(trId, id) {
+        const trData = document.getElementById(trId);
+        const propietarioSeleccionado = document.getElementById('propietarioSeleccionado');
+        const nombre = trData.cells[0].innerText;
+        const carnet = trData.cells[1].innerText;
+        propietarioSeleccionado.textContent = `${nombre}  | CI: ${carnet}`
+        registro.propietario_id = id;
+    }
+
+    function registrarTramite(event) {
+        event.preventDefault();
+        const tipoTramite = document.getElementById('TipoTramite').value;
+        const descripcion = document.querySelector('textarea[name="DescripcionDocumentosEntregados"]').value;
+        const fechaEntrega = document.querySelector('input[name="FechaEstimadaEntrega"]').value;
+        const nroPatente = document.querySelector('input[name="NroPatente"]').value;
+        registro.descripcion_documentos_entregados = descripcion;
+        registro.fecha_estimada_entrega = fechaEntrega;
+        registro.tipo_tramite = tipoTramite;
+        registro.nro_patente = nroPatente;
+        console.log(registro)
+        for (let atr in registro) {
+            if (registro[atr] == null) {
+                alert(`Falta el valor de ${atr}`);
+                return;
+            }
+        }
+        fetch(`/gestor_tramite/registrar_tramite`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(registro)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Tramite registrado con éxito");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Ocurrio un error en servidor.");
+            });
+    }
+</script>

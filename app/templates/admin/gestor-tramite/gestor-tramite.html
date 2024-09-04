@@ -1,0 +1,111 @@
+{% extends 'admin/admin-base.html' %}
+
+{% block title %}INICIO | ADMIN | TRAMITES{% endblock %}
+
+{% block content %}
+
+<div class="header-gestor-tramite">
+    <h1>Gestor Trámite</h1>
+    <div class="options-tramites">
+        <button onclick="showRegistrarTramitador()" id="tab-registrar-tramitador" class="tab-button active">Registrar Tramitador</button>
+        <button onclick="showNuevoTramite()" id="tab-nuevo-tramite" class="tab-button">Nuevo Trámite</button>
+    </div>
+</div>
+<div class="box-container">
+    <div class="box-registrar-tramitador visible">
+        {% include 'shared/registrar-tramitador/registrar-tramitador.html' %}
+    </div>
+    <div class="box-nuevo-tramite no-visible">
+        {% include 'shared/registrar-nuevo-tramite/registrar-nuevo-tramite.html' %}
+        
+    </div>
+</div>
+
+<style>
+    .header-gestor-tramite {
+        display: flex;
+        background-color: #FAFAFA;
+        flex-direction: column;
+        margin-bottom: 1px;
+        align-items: center;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 5px;
+    }
+    .header-gestor-tramite h1 {
+        font-size: 24px;
+        color: #2e3440;
+    }
+    .options-tramites {
+        display: flex;
+        gap:5px;
+        width: 100%;
+    }
+    .tab-button {
+        width: inherit;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: transparent;
+        color: #a8a8a8;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .tab-button:hover {
+        background-color: #F1F1F1;
+    }
+
+    .tab-button.active {
+        color: black;
+        background-color: #EBEBEB;
+    }
+    
+    .box-registrar-tramitador,
+    .box-nuevo-tramite {
+        display: none;
+    }
+    .visible {
+        display: block;
+    }
+
+    .no-visible {
+        display: none; 
+    }
+</style>
+
+<script>
+    function showRegistrarTramitador() {
+        const boxRegistrarTramitador = document.querySelector('.box-registrar-tramitador');
+        const boxNuevoTramite = document.querySelector('.box-nuevo-tramite');
+        const buttonRegistrarTramitador = document.querySelector('#tab-registrar-tramitador');
+        const buttonNuevoTramite = document.querySelector('#tab-nuevo-tramite');
+
+        boxRegistrarTramitador.classList.add('visible');
+        boxRegistrarTramitador.classList.remove('no-visible');
+        
+        boxNuevoTramite.classList.remove('visible');
+        boxNuevoTramite.classList.add('no-visible');
+
+        buttonRegistrarTramitador.classList.add('active');
+        buttonNuevoTramite.classList.remove('active');
+    }
+
+    function showNuevoTramite() {
+        const boxRegistrarTramitador = document.querySelector('.box-registrar-tramitador');
+        const boxNuevoTramite = document.querySelector('.box-nuevo-tramite');
+        const buttonRegistrarTramitador = document.querySelector('#tab-registrar-tramitador');
+        const buttonNuevoTramite = document.querySelector('#tab-nuevo-tramite');
+
+        boxNuevoTramite.classList.add('visible');
+        boxNuevoTramite.classList.remove('no-visible');
+        
+        boxRegistrarTramitador.classList.remove('visible');
+        boxRegistrarTramitador.classList.add('no-visible');
+
+        buttonNuevoTramite.classList.add('active');
+        buttonRegistrarTramitador.classList.remove('active');
+    }
+</script>
+
+{% endblock %}

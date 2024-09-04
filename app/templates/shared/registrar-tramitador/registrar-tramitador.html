@@ -1,0 +1,111 @@
+<style>
+    .bx {
+        max-width: 600px;
+        margin: 5px auto;
+        padding: 20px;
+        background-color: #FCFCFC;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .bx-form>h2{
+        font-weight: normal;
+        padding: 5px;
+        border-bottom:2px solid #636a74;
+        margin-bottom: 10px;
+    }
+    .bx-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .bx-form label {
+        margin-bottom: 15px;
+    }
+
+    .bx-form input[type="text"],
+    .bx-form input[type="tel"] {
+        padding: 5px;
+        font-size: 1rem;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        transition: border-color 0.3s;
+        background-color: #ffffff;
+    }
+
+    .bx-form input[type="text"]:focus,
+    .bx-form input[type="tel"]:focus {
+        border-color: #5e81ac;
+        outline: none;
+    }
+
+    .bx-form input[type="submit"] {
+        padding: 5px;
+        font-size: 1rem;
+        color: #ffffff;
+        background-color: #5e81ac;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .bx-form input[type="submit"]:hover {
+        background-color: #4c566a;
+    }
+ 
+</style>
+
+<div class="bx">
+    <form class="bx-form" onsubmit="return registrarPersona(event)">
+        <h2>Registrar Persona</h2>
+        <label for="nombre">
+            <input type="text" name="Nombre" id="nombre" placeholder="Nombre" required>
+        </label>
+        <label for="apellido-paterno">
+            <input type="text" name="ApellidoPaterno" id="apellido-paterno" placeholder="Apellido Paterno" required>
+        </label>
+        <label for="apellido-materno">
+            <input type="text" name="ApellidoMaterno" id="apellido-materno" placeholder="Apellido Materno" required>
+        </label>
+        <label for="carnet">
+            <input type="text" name="Carnet" id="carnet" placeholder="Carnet de identidad" required>
+        </label>
+        <label for="telefono">
+            <input type="tel" name="Tel" id="telefono" placeholder="Teléfono" required>
+        </label>
+        <label for="direccion">
+            <input type="text" name="Direccion" id="direccion" placeholder="Dirección" required>
+        </label>
+        <input type="submit" value="Registrar">
+    </form>
+</div>
+
+<script>
+    function registrarPersona(event) {
+        event.preventDefault();
+        const rBody = {
+            carnet: document.querySelector('input[name="Carnet"]').value,
+            nombre: document.querySelector('input[name="Nombre"]').value,
+            ap_paterno: document.querySelector('input[name="ApellidoPaterno"]').value,
+            ap_materno: document.querySelector('input[name="ApellidoMaterno"]').value,
+            tel: document.querySelector('input[name="Tel"]').value,
+            direccion: document.querySelector('input[name="Direccion"]').value,
+        };
+
+        fetch(`/gestor_tramite/registrar_persona`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(rBody)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Persona registrada con éxito");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Ocurrio un error en servidor.");
+            });
+    }
+</script>

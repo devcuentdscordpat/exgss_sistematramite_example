@@ -1,0 +1,89 @@
+<style>
+  .sidebar {
+      width: 250px;
+      background-color: #3b3b3b;
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  }
+
+  .sidebar h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #eceff4;
+  }
+
+  .sidebar ul {
+      list-style: none;
+      padding: 0;
+  }
+
+  .sidebar ul li {
+      margin: 15px 0;
+  }
+
+  .sidebar ul li a,
+  .sidebar a {
+      text-decoration: none;
+      color: #d8dee9;
+      padding: 10px;
+      display: block;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+  }
+
+  .sidebar ul li a:hover,
+  .sidebar a:hover {
+      background-color: #4c566a;
+      color: #ffffff; 
+  }
+
+  .last-item {
+      margin-top: auto;
+      font-weight: bold;
+  }
+
+  .content {
+      margin-left: 260px;
+      padding: 20px;
+      width: calc(100% - 260px);
+      transition: margin-left 0.3s;
+  }
+
+  @media (max-width: 768px) {
+      .sidebar {
+          width: 200px;
+      }
+
+      .content {
+          margin-left: 220px;
+          width: calc(100% - 220px);
+      }
+  }
+
+  @media (max-width: 480px) {
+      .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+      }
+
+      .content {
+          margin-left: 0;
+          width: 100%;
+      }
+  }
+</style>
+
+<div class="sidebar">
+  <h1>Trámites</h1>
+  <ul>
+      {% for item in sidebar_items %}
+          <li><a href="{{ item.path }}">{{ item.item_name }}</a></li>
+      {% endfor %}
+  </ul>
+  <a href="/cerrar-sesion" class="last-item">Cerrar sesión</a>
+</div>
+<script type="module">
+  // Tu script aquí
+</script>

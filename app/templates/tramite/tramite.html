@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver tramite</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background:
+      radial-gradient(35.36% 35.36% at 100% 25%,#0000 66%,#308440 68% 70%,#0000 72%) 100px 100px/calc(2*100px) calc(2*100px),
+      radial-gradient(35.36% 35.36% at 0    75%,#0000 66%,#308440 68% 70%,#0000 72%) 100px 100px/calc(2*100px) calc(2*100px),
+      radial-gradient(35.36% 35.36% at 100% 25%,#0000 66%,#308440 68% 70%,#0000 72%) 0 0/calc(2*100px) calc(2*100px),
+      radial-gradient(35.36% 35.36% at 0    75%,#0000 66%,#308440 68% 70%,#0000 72%) 0 0/calc(2*100px) calc(2*100px),
+      repeating-conic-gradient(#cdd4cf 0 25%,#0000 0 50%) 0 0/calc(2*100px) calc(2*100px),
+      radial-gradient(#0000 66%,#308440 68% 70%,#0000 72%) 0 calc(100px/2)/100px 100px
+      #cdd4cf;
+
+        }
+        .flex{
+            display: flex;
+        }
+        .box-buscador, .card-resultado{
+            width: 600px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            background: rgba(255,255,255,0.55);
+            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.275);
+        }
+        .box-buscador input[type="submit"]{
+            width: 100px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="box-buscador">
+        <h1>Tramites Cotoca</h1>
+        <form action="/ver_tramite" method="POST" class="flex">
+            <input type="text" name="codigo" placeholder="Codigo de Tramite">
+            <input type="submit" value="Buscar">
+        </form>
+    </div>
+
+    <div class="box-resultado">
+        {% if tramite %}
+        <div class="card-resultado">
+            <p>Codigo de tramite: {{ tramite.id }}</p>
+            <p>Fecha de Fin Probable: {{ tramite.fecha_fin_probable }}</p>
+            <p>Estado: {{ tramite.nombre_estado }}</p>
+        </div>
+        {% else %}
+        <div class="card-resultado">
+            <p>Trámite no disponible</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+
+    </script>
+</body>
+</html>
