@@ -19,10 +19,17 @@
     previews = {
       enable = true;
       previews = {
+        web = {
+          command = [ "./devserver.sh" ];
+          env = { PORT = "$PORT"; };
+          manager = "web";
+        };
       };
     };
     workspace = {
       onCreate = {
+        install =
+          "python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt";
       };
       onStart = {
       };

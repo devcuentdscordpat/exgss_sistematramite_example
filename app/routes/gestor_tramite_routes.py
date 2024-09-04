@@ -42,7 +42,8 @@ def registrar_tramite():
         id_tipo_tramite=tipo_tramite_id,
         id_propietario=propietario_id,
         id_gestor_tramite=tramitador_id,
-        id_operador=4 # Aqui cambiar para obtener el ID Operador dependiendo del usuario que se haya logueado.
+        id_operador=4, # Aqui cambiar para obtener el ID Operador dependiendo del usuario operador que se haya logueado.
+        nombre_estado=None
     )
 
     if gestor_tramite_gestor.registrar_tramite(tramite):

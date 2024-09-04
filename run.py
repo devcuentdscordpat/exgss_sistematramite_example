@@ -20,5 +20,5 @@ app.register_blueprint(admin_bp) # Cargando rutas que programamos en admin_route
 app.register_blueprint(gestor_tramite_bp) #...
 
 if __name__ == "__main__":
-    app.run(debug=True) # Aqui ejecutamos la aplicacion en modo debug.
+    app.run(debug=True, port=int(os.environ.get('PORT', 80))) # Aqui ejecutamos la aplicacion en modo debug.
 

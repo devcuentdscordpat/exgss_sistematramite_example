@@ -129,7 +129,6 @@ def verificar_persona_es_gestor_tramite(id) -> bool:
             "SELECT * FROM gestor_tramite WHERE id = %s;", 
             (id,)
         )
-        conexion.close()
         res = cursor.fetchone()
         if res:
             return True
@@ -149,7 +148,6 @@ def verificar_persona_es_propietario(id) -> bool:
             "SELECT * FROM propietario WHERE id = %s;", 
             (id,)
         )
-        conexion.close()
         res = cursor.fetchone()
         if res:
             return True
